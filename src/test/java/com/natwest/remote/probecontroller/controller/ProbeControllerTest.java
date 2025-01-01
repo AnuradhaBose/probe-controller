@@ -38,13 +38,13 @@ class ProbeControllerTest {
 
     @Test
     void initializeProbe_failure() throws Exception {
-        doThrow(new IllegalArgumentException("Probe Initialization Failed. Invalid Probe Points"))
+        doThrow(new IllegalArgumentException("Index not in range"))
                 .when(probeService).initializeProbe(any(Probe.class));
         mockMvc.perform(post("/probe/initialize")
                         .contentType("application/json")
                         .content("{\"point\": {\"x\":-1 , \"y\":1}, \"direction\": \"NORTH\",\"visited\":[]}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Probe Initialization Failed. Invalid Probe Points"));
+                .andExpect(content().string("Index not in range"));
     }
 
     @Test

@@ -33,12 +33,12 @@ class GridControllerTest {
 
     @Test
     void initialize_failure() throws Exception {
-        doThrow(new IllegalArgumentException("Invalid Grid Index"))
+        doThrow(new IllegalArgumentException("Index not in range"))
                 .when(service).initializeGrid(any(OceanGrid.class));
         mockMvc.perform(post("/grid/initialize")
                         .contentType("application/json")
                         .content("{\"length\": -1, \"breadth\": 5,\"obstacles\":[]}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Invalid Grid Index"));
+                .andExpect(content().string("Index not in range"));
     }
 }

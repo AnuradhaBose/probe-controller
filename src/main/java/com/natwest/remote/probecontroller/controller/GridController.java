@@ -20,12 +20,9 @@ public class GridController {
 
     @PostMapping("/initialize")
     public ResponseEntity<String> initialize(@RequestBody OceanGrid grid){
-        try {
-            service.initializeGrid(grid);
-            return new ResponseEntity<>("Ocean Grid Initialized",HttpStatus.OK);
-        }catch (IllegalArgumentException e){
-            return new ResponseEntity<>("Invalid Grid Index", HttpStatus.BAD_REQUEST);
-        }
+        service.initializeGrid(grid);
+        return new ResponseEntity<>("Ocean Grid Initialized",HttpStatus.OK);
+
     }
 
 
