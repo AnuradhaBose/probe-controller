@@ -6,7 +6,9 @@ import com.natwest.remote.probecontroller.dao.Point;
 import com.natwest.remote.probecontroller.dao.Probe;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.MissingResourceException;
+import java.util.Set;
 
 @Service
 public class ProbeService {
@@ -38,6 +40,7 @@ public class ProbeService {
 
     public Point move(Command command){
         Point nextPosition = calculateNextPosition(command);
+        System.out.println("next "+nextPosition);
         // throw error if next position is not within grid or has obstacle
         if(!isWithinBoundary(nextPosition) || isObstacle(nextPosition)){
             throw new IllegalArgumentException();
@@ -48,7 +51,31 @@ public class ProbeService {
     }
 
     private Point calculateNextPosition(Command command){
-        return new Point(1,1);
+        int dx = 0, dy = 0;
+
+        switch (command) {
+            case FORWARD -> {
+                switch (probe.getDirection()) {
+                    case NORTH -> dy = 1;
+                    case SOUTH -> dy = -1;
+                    case EAST  -> dx = 1;
+                    case WEST  -> dx = -1;
+                }
+            }
+            case BACKWARD -> {
+                switch (probe.getDirection()) {
+                    case NORTH -> dy = -1;
+                    case SOUTH -> dy = 1;
+                    case EAST  -> dx = -1;
+                    case WEST  -> dx = 1;
+                }
+            }
+            case LEFT -> probe.setDirection(probe.getDirection().turnLeft());
+            case RIGHT -> probe.setDirection(probe.getDirection().turnRight());
+        }
+
+        // Calculate the new position only for FORWARD and BACKWARD. Change directions for left and right commands
+        return new Point(probe.getPoint().getX() + dx, probe.getPoint().getY() + dy);
     }
 
     private boolean isWithinBoundary(Point point){
@@ -58,6 +85,10 @@ public class ProbeService {
 
     private boolean isObstacle(Point point){
         return grid.getObstacles().contains(point);
+    }
+
+    public Set<Point> getVisitedCoordinates() {
+        return Collections.unmodifiableSet(probe.getVisited());
     }
 
 }

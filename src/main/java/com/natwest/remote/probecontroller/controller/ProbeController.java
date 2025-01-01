@@ -37,7 +37,7 @@ public class ProbeController {
 
     @GetMapping("/visited")
     public ResponseEntity<Set<Point>> getVisitedCoordinates() {
-        return new ResponseEntity<>(new HashSet<>(),HttpStatus.OK);
+        return ResponseEntity.ok(probeService.getVisitedCoordinates());
     }
 }
 
