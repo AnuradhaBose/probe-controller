@@ -22,8 +22,13 @@ public class ProbeController {
 
     @PostMapping("/initialize")
     public ResponseEntity<String> initializeProbe(@RequestBody Probe probe){
-        probeService.initializeProbe(probe);
-        return new ResponseEntity<>("Probe Initialized", HttpStatus.OK);
+        try {
+            probeService.initializeProbe(probe);
+            return new ResponseEntity<>("Probe Initialized", HttpStatus.OK);
+        }
+        catch (IllegalArgumentException e){
+            return new ResponseEntity<>("Probe Initialization Failed. Invalid Probe Points",HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/move")

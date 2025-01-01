@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class ProbeService {
 
     private OceanGrid grid;
+    private Probe probe;
 
     public void initializeGrid(OceanGrid grid) {
         if(grid.getLength()<0 || grid.getBreadth()<0){
@@ -18,7 +19,10 @@ public class ProbeService {
     }
 
     public void initializeProbe(Probe probe){
-
+        if(probe.getPoint().getX()<0 || probe.getPoint().getY()<0){
+            throw new IllegalArgumentException();
+        }
+        this.probe = probe;
     }
 
 }
