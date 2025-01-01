@@ -1,6 +1,8 @@
 package com.natwest.remote.probecontroller.controller;
 
+import com.natwest.remote.probecontroller.dao.Command;
 import com.natwest.remote.probecontroller.dao.OceanGrid;
+import com.natwest.remote.probecontroller.dao.Point;
 import com.natwest.remote.probecontroller.dao.Probe;
 import com.natwest.remote.probecontroller.service.ProbeService;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,7 +38,7 @@ class ProbeControllerTest {
     }
 
     @Test
-    void initializeProbe_failure() throws Exception {
+    void initializeProbe_invalidIndex_failure() throws Exception {
         doThrow(new IllegalArgumentException("Index not in range"))
                 .when(probeService).initializeProbe(any(Probe.class));
         mockMvc.perform(post("/probe/initialize")
@@ -46,9 +47,20 @@ class ProbeControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Index not in range"));
     }
+    @Test
+    void initializeProbe_gridNotInitialized_failure() throws Exception {
+        doThrow(new IllegalStateException("Grid not initialized"))
+                .when(probeService).initializeProbe(any(Probe.class));
+        mockMvc.perform(post("/probe/initialize")
+                        .contentType("application/json")
+                        .content("{\"point\": {\"x\":-1 , \"y\":1}, \"direction\": \"NORTH\",\"visited\":[]}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Grid not initialized"));
+    }
 
     @Test
     void executeCommands() throws Exception {
+        when(probeService.move(any(Command.class))).thenReturn(new Point(1,1));
         mockMvc.perform(post("/probe/move")
                         .contentType("application/json")
                         .content("[\"RIGHT\",\"FORWARD\"]"))

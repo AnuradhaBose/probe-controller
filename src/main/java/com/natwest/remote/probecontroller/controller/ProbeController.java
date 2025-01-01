@@ -28,7 +28,11 @@ public class ProbeController {
 
     @PostMapping("/move")
     public ResponseEntity<Point> executeCommands(@RequestBody List<Command> commands){
-        return new ResponseEntity<>(new Point(1,1),HttpStatus.OK);
+        Point point = null;
+        for(Command c:commands){
+            point = probeService.move(c);
+        }
+        return new ResponseEntity<>(point,HttpStatus.OK);
     }
 
     @GetMapping("/visited")

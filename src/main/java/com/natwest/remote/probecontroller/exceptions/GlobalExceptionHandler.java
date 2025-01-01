@@ -14,6 +14,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Index not in range", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity IllegalStateExceptionHandler(IllegalStateException e){
+        System.out.println("Grid not initialized"+e.getMessage());
+        return new ResponseEntity<>("Grid not initialized", HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity GeneralExceptionHandler(Exception e){
         System.out.println(e.getCause());
