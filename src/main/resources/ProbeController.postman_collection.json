@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "60113269-a582-4b69-abb9-394cca5e3a93",
+		"name": "ProbeController",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1494415"
+	},
+	"item": [
+		{
+			"name": "initializeGrid",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"length\": -1,\r\n  \"breadth\": 8,\r\n  \"obstacles\": [\r\n    { \"x\": 2, \"y\": 3 },\r\n    { \"x\": 4, \"y\": 5 },\r\n    { \"x\": 7, \"y\": 1 }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/grid/initialize",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"grid",
+						"initialize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "initializeProbe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"point\": { \"x\": -1, \"y\": 2 },\r\n  \"direction\": \"NORTH\",\r\n  \"visited\": [\r\n    \r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/probe/initialize",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"probe",
+						"initialize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "move",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  \"RIGHT\",\r\n  \"FORWARD\"\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/probe/move",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"probe",
+						"move"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visited",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/probe/visited",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"probe",
+						"visited"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
